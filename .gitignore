@@ -1,0 +1,6 @@
+# Ignoring build files and other trash
+.*
+build
+
+# Keep this one last
+!.gitignore
