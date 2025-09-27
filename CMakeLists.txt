@@ -19,11 +19,13 @@ endif()
 
 # Library source files (TODO: Update with each new lib module)
 set(LIB_SOURCES
-    body/someLibFile.c)
+    body/someLibFile.c
+    body/matrixWorld.c)
 
 # Library header files (TODO: Update with each new lib module)
 set(LIB_HEADERS
-    api-private/someLibFile.h)
+    api-private/someLibFile.h
+    api-private/matrixWorld.h)
 
 # Library directories
 set(LIB_DIRECTORIES
