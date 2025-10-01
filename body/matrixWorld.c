@@ -1,13 +1,11 @@
+/* > Description ****************************************************************/
 /**
  * @file matrixWorld.c
- * @author Slepotek (slepotek.dev@gmail.com)
- * @brief Implements the WorldMatrix data structure and its manipulation functions.
- * @version 1.0
- * @date 2025-09-28
- *
- * This file provides the core functionality for creating, modifying, and querying a 2D matrix
- * that represents the world. The matrix consists of cells that can be either "blocked" or "unblocked",
- * forming the basis for pathfinding algorithms.
+ * @brief 
+ *   This file provides the core functionality for creating, modifying, and
+ *   querying a 2D matrix that represents the world. The matrix consists of
+ *   cells that can be either "blocked" or "unblocked", forming the basis for
+ *   pathfinding algorithms.
  */
 
 /* > Includes ****************************************************************/
@@ -20,6 +18,7 @@
 
 /* > Defines *****************************************************************/
 #define MINIMUM_MATRIX_SIZE 4
+
 /* > Type Declarations *******************************************************/ 
 struct WorldMatrix {
   uint16_t rows;
@@ -191,13 +190,10 @@ uint16_t MATRIXWORLD_countUnblockedNeighbors(WorldMatrix *const matrix_p,
       "coordinates are out of bounds for this matrix!\n");
 
   uint16_t unblockedNeighbours = 0;
-  // Note: This function relies on a `directions` array and `FOUR_DIRECTIONS` define
-  // located in the someLibrary.h header file
   for (uint8_t index = 0; index < FOUR_DIRECTIONS; index++) {
     int16_t newRow = row + directions[index].row;
     int16_t newCol = col + directions[index].col;
 
-    // Check if the new coordinates are within matrix boundaries
     if (newRow >= 0 && newRow < matrix_p->rows && newCol >= 0 &&
         newCol < matrix_p->cols) {
       if (!MATRIXWORLD_isBlocked(matrix_p, (uint16_t)newRow,
@@ -266,9 +262,8 @@ static void
 MATRIXWORLD_internal_nullCheck(const WorldMatrix *const matrix_p,
                                const char *restrict message) {
   if (matrix_p == NULL) {
-    // Critical, unrecoverable error
     fprintf(stderr, "%s", message);
-    exit(EXIT_FAILURE); // Exit with a failure status
+    exit(EXIT_FAILURE);
   }
 }
 

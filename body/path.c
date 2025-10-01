@@ -1,44 +1,45 @@
+/* > Description ****************************************************************/
 /**
  * @file path.c
- * @author Slepotek (slepotek.dev@gmail.com)
- * @brief Implementation of the Path data structure and its manipulation functions.
- * @version 1.0
- * @date 2025-09-28
- *
- * This file provides the core functionality for the Path data structure, which
- * is represented by a struct with a flexible array member. It includes functions
- * for initialization, memory management, and path manipulation.
+ * @brief 
+ *   This file provides the core functionality for the Path data structure, which
+ *   is represented by a struct with a flexible array member. It includes functions
+ *   for initialization, memory management, and path manipulation.
  */
 
+/* > Includes ****************************************************************/
 #include "path.h"
 #include "matrixWorld.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/* > Defines *****************************************************************/
 #define SEVENTY_FIVE_PERCENT 0.75
+
+/* > Type Declarations *******************************************************/ 
 
 /**
  * @brief Defines the internal structure of the Path.
- *
- * @param pathSize The total capacity of the path.
- * @param currentNoOfCordsInPath The current number of coordinates stored.
- * @param pathArray A flexible array member to hold the coordinates.
  */
 struct Path {
-  size_t pathSize;
-  size_t currentNoOfCordsInPath;
-  Cords pathArray[];
+  size_t pathSize; ///< The total capacity of the path.
+  size_t currentNoOfCordsInPath; ///< The current number of coordinates stored.
+  Cords pathArray[]; ///< A flexible array member to hold the coordinates.
 };
+
+/* > Global Constant Definitions *********************************************/
+
+/* > Global Variable Definitions *********************************************/
+
+/* > Local Constant Definitions **********************************************/
+
+/* > Local Variable Definitions **********************************************/
 
 /* > Local Function Declarations *********************************************/
 
 /**
  * @brief Internal function to check for null pointers and exit on failure.
- *
- * If the provided pointer is NULL, this function prints a critical error
- * message to stderr and terminates the program.
- *
  * @param path_p[in]  Pointer to the Path.
  * @param message[in] The error message to print on failure.
  */
@@ -64,7 +65,7 @@ Path *PATH_initializePath(const size_t pathSize,
       newPath,
       "FATAL ERROR: Path structure could not be initialized. No memory!\n");
   newPath->pathSize = pathSize;
-  newPath->currentNoOfCordsInPath = 0; // Initialize current size to 0
+  newPath->currentNoOfCordsInPath = 0;
 
   return newPath;
 }
@@ -113,9 +114,7 @@ Cords PATH_popCoordinates(Path *path_p) {
     return (Cords){.row = UINT16_MAX, .col = UINT16_MAX};
   }
   Cords lastCoordinates = PATH_getLastCoordinates(path_p);
-  // Decrease number of currently stored Path coordinates
   path_p->currentNoOfCordsInPath--;
-  // Zeroize last coordinates (they can be reused)
   path_p->pathArray[path_p->currentNoOfCordsInPath] =
       (Cords){.row = 0, .col = 0};
   return lastCoordinates;
@@ -126,7 +125,7 @@ bool PATH_isContiguous(Path *path_p) {
       path_p, "FATAL ERROR: Trying to check if the Path is contiguous but the "
               "path structure is not initialized!\n");
   if (PATH_isEmpty(path_p) || path_p->currentNoOfCordsInPath < 2) {
-    return true; // A path with 0 or 1 element is contiguous by definition
+    return true;
   }
 
   for (size_t index = 1; index < path_p->currentNoOfCordsInPath; index++) {
@@ -140,7 +139,6 @@ bool PATH_isContiguous(Path *path_p) {
                             ? (currentCords.col - nextCords.col)
                             : (nextCords.col - currentCords.col);
 
-    // Adjacent cells have Manhattan distance of exactly 1
     if ((row_dist + col_dist) != 1) {
       return false;
     }
@@ -160,7 +158,6 @@ size_t PATH_getLength(Path *path_p) {
 
 void PATH_clearPath(Path *path_p) {
   PATH_internal_nullCheck(path_p, "FATAL ERROR: Path is not initialized!\n");
-  // For hygiene, zero out the memory
   memset(path_p->pathArray, 0, sizeof(Cords) * path_p->currentNoOfCordsInPath);
   path_p->currentNoOfCordsInPath = 0;
 }
@@ -183,8 +180,7 @@ void PATH_printPath(Path *path_p) {
 static void PATH_internal_nullCheck(const Path *const path_p,
                                     const char *restrict message) {
   if (path_p == NULL) {
-    // Critical, unrecoverable error
     fprintf(stderr, "%s", message);
-    exit(EXIT_FAILURE); // Exit with a failure status
+    exit(EXIT_FAILURE);
   }
 }
