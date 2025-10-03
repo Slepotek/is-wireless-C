@@ -1,6 +1,9 @@
 # Ignoring build files and other trash
 .*
 build
+path_coordinates.txt
+blocked_cells_*.txt
+venv/
 
 # Keep this one last
 !.gitignore

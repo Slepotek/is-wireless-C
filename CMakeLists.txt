@@ -22,7 +22,8 @@ set(LIB_SOURCES
     body/matrixWorld.c
     body/path.c
     body/startingPointVector.c
-    body/dfsPathFinding.c)
+    body/dfsPathFinding.c
+    body/cli_handling.c)
 
 # Library header files (TODO: Update with each new lib module)
 set(LIB_HEADERS
@@ -30,7 +31,8 @@ set(LIB_HEADERS
     api-private/matrixWorld.h
     api-private/path.h
     api-private/startingPointVector.h
-    api-private/dfsPathFinding.h)
+    api-private/dfsPathFinding.h
+    api-private/cli_handling.h)
 
 # Library directories
 set(LIB_DIRECTORIES
