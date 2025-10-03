@@ -9,6 +9,7 @@
 /* > Includes ****************************************************************/
 #include "startingPointVector.h"
 #include "utilities.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -80,6 +81,12 @@ void STPOINT_destroyVector(StartingPointVector **const vector_pp) {
     }
 }
 
+void STPOINT_cleanVector(StartingPointVector *const vector_p) {
+    if (vector_p != NULL) {
+        vector_p->currentSize = 0;
+    }
+}
+
 void STPOINT_addPoint(StartingPointVector *const vector_p, Cords point) {
     if (vector_p == NULL || vector_p->currentSize >= vector_p->capacity) {
         return;
@@ -120,6 +127,37 @@ void STPOINT_addPoint(StartingPointVector *const vector_p, Cords point) {
 
     vector_p->points[insertionIdx] = point;
     vector_p->currentSize++;
+}
+
+void STPOINT_removePoint(StartingPointVector *const vector_p, Cords point) {
+    if (vector_p == NULL || vector_p->currentSize >= vector_p->capacity) {
+        return;
+    }
+
+    // If the vector is empty, just insert at the beginning.
+    if (vector_p->currentSize == 0) {
+        fprintf(stderr, "FATAL ERROR: Trying to remove element from empty vector!");
+        exit(EXIT_FAILURE);
+    }
+
+    Cords *pointToDelete_p =
+        bsearch(&point, vector_p->points, vector_p->currentSize, sizeof(Cords),
+                STPOINT_internal_compareCords);
+    if (pointToDelete_p != NULL) {
+      size_t pointIndex = pointToDelete_p - vector_p->points;
+      size_t noOfElementsToMove = (vector_p->currentSize - 1) - pointIndex;
+      if (noOfElementsToMove > 0)
+        memmove(pointToDelete_p, pointToDelete_p + 1,
+                sizeof(Cords) * noOfElementsToMove);
+      vector_p->currentSize--;
+    }
+}
+
+size_t STPOINT_getSize(const StartingPointVector *const vector_p) {
+    if (vector_p == NULL) {
+        return 0;
+    }
+    return vector_p->currentSize;
 }
 
 bool STPOINT_containsPoint(const StartingPointVector *const vector_p, Cords point) {

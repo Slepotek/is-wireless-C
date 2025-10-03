@@ -1,8 +1,8 @@
 #include "path.h"
 #include "matrixWorld.h"
+#include "utilities.h"
 #include <stdio.h>
 #include <assert.h>
-#include <stdlib.h>
 #include <stdint.h>
 
 void test_initialization_and_length() {
@@ -93,12 +93,44 @@ void test_is_contiguous() {
     printf("Passed: Path Contiguity\n");
 }
 
+void test_contains_coordinates() {
+    printf("Testing: Path Contains Coordinates\n");
+    WorldMatrix* matrix = MATRIXWORLD_matrixInitialization(10, 10);
+    Path* path = PATH_initializePath(12, matrix);
+
+    Cords p1 = {1, 1}, p2 = {5, 5}, p3 = {9, 9};
+
+    // Test on empty path
+    assert(!PATH_containsCoordinates(path, &p1));
+
+    // Add points
+    PATH_addCoordinates(path, p1.row, p1.col);
+    PATH_addCoordinates(path, p2.row, p2.col);
+
+    // Test for existing points
+    assert(PATH_containsCoordinates(path, &p1));
+    assert(PATH_containsCoordinates(path, &p2));
+
+    // Test for a non-existent point
+    assert(!PATH_containsCoordinates(path, &p3));
+
+    // Test after popping a point
+    UNUSED(PATH_popCoordinates(path));
+    assert(PATH_containsCoordinates(path, &p1));
+    assert(!PATH_containsCoordinates(path, &p2));
+
+    PATH_freePath(&path);
+    MATRIXWORLD_matrixFree(&matrix);
+    printf("Passed: Path Contains Coordinates\n");
+}
+
 int main(void) {
     printf("--- Running Path Tests ---\n");
     test_initialization_and_length();
     test_add_and_get_length();
     test_get_pop_and_clear();
     test_is_contiguous();
+    test_contains_coordinates();
     printf("--- All Path Tests Passed ---\n");
     return 0;
 }

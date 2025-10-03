@@ -46,7 +46,7 @@ typedef struct Path Path;
  * @brief Frees the memory allocated for a Path instance.
  * @param path_pp[in,out] Pointer to the pointer of the Path to be freed.
  */
-void PATH_freePath(Path **path_pp);
+void PATH_freePath(Path** const path_pp);
 
 /**
  * @brief Adds a new coordinate to the end of the path.
@@ -54,54 +54,56 @@ void PATH_freePath(Path **path_pp);
  * @param row[in] The row of the coordinate to add.
  * @param col[in] The column of the coordinate to add.
  */
-void PATH_addCoordinates(Path *path_p, uint16_t row, uint16_t col);
+void PATH_addCoordinates(Path* const path_p, uint16_t row, uint16_t col);
 
 /**
  * @brief Retrieves the last coordinate added to the path without removing it.
  * @param path_p[in] A pointer to the Path instance.
  * @return The last Cords in the path, or Cords with UINT16_MAX if empty.
  */
-[[nodiscard]] Cords PATH_getLastCoordinates(Path *path_p);
+[[nodiscard]] Cords PATH_getLastCoordinates(const Path* const path_p);
+
+[[nodiscard]] bool PATH_containsCoordinates(const Path* const path_p, const Cords* const coordinates);
 
 /**
  * @brief Removes and returns the last coordinate from the path.
  * @param path_p[in,out] A pointer to the Path instance.
  * @return The last Cords in the path, or Cords with UINT16_MAX if empty.
  */
-[[nodiscard]] Cords PATH_popCoordinates(Path *path_p);
+[[nodiscard]] Cords PATH_popCoordinates(Path* const path_p);
 
 /**
  * @brief Checks if the path is contiguous.
  * @param path_p[in] A pointer to the Path instance.
  * @return true if the path is contiguous, false otherwise.
  */
-[[nodiscard]] bool PATH_isContiguous(Path *path_p);
+[[nodiscard]] bool PATH_isContiguous(const Path * const path_p);
 
 /**
  * @brief Checks if the path is empty.
  * @param path_p[in] A pointer to the Path instance.
  * @return true if the path contains no coordinates, false otherwise.
  */
-[[nodiscard]] bool PATH_isEmpty(Path *path_p);
+[[nodiscard]] bool PATH_isEmpty(const Path * const path_p);
 
 /**
  * @brief Gets the current number of coordinates in the path.
  * @param path_p[in] A pointer to the Path instance.
  * @return The number of coordinates currently stored in the path.
  */
-[[nodiscard]] size_t PATH_getLength(Path *path_p);
+[[nodiscard]] size_t PATH_getLength(const Path* const path_p);
 
 /**
  * @brief Clears all coordinates from the path.
  * @param path_p[in,out] A pointer to the Path instance.
  */
-void PATH_clearPath(Path *path_p);
+void PATH_clearPath(Path* const path_p);
 
 /**
  * @brief Prints all coordinates in the path to stdout.
  * @param path_p[in] A pointer to the Path instance.
  */
-void PATH_printPath(Path *path_p);
+void PATH_printPath(const Path* const path_p);
 
 /* > End of Multiple Inclusion Protection *********************************/
 #endif /* PATH_H */

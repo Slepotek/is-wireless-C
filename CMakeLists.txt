@@ -21,14 +21,16 @@ endif()
 set(LIB_SOURCES
     body/matrixWorld.c
     body/path.c
-    body/startingPointVector.c)
+    body/startingPointVector.c
+    body/dfsPathFinding.c)
 
 # Library header files (TODO: Update with each new lib module)
 set(LIB_HEADERS
     api-private/utilities.h
     api-private/matrixWorld.h
     api-private/path.h
-    api-private/startingPointVector.h)
+    api-private/startingPointVector.h
+    api-private/dfsPathFinding.h)
 
 # Library directories
 set(LIB_DIRECTORIES

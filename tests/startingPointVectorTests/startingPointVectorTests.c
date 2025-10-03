@@ -2,7 +2,6 @@
 #include "matrixWorld.h"
 #include <stdio.h>
 #include <assert.h>
-#include <stdlib.h>
 
 void test_create_and_destroy() {
     printf("Testing: Create and Destroy\n");
@@ -93,12 +92,75 @@ void test_add_sorted() {
     printf("Passed: Add in Sorted Order\n");
 }
 
+void test_remove_point() {
+    printf("Testing: Remove Point\n");
+    WorldMatrix* matrix = MATRIXWORLD_matrixInitialization(10, 10);
+    StartingPointVector* vec = STPOINT_createVector(matrix);
+
+    Cords p1 = {1, 1}, p2 = {2, 2}, p3 = {3, 3}, p4_non_existent = {4, 4};
+
+    STPOINT_addPoint(vec, p1);
+    STPOINT_addPoint(vec, p2);
+    STPOINT_addPoint(vec, p3);
+    assert(STPOINT_getSize(vec) == 3);
+
+    // Remove from middle
+    STPOINT_removePoint(vec, p2);
+    assert(STPOINT_getSize(vec) == 2);
+    assert(!STPOINT_containsPoint(vec, p2));
+    assert(STPOINT_containsPoint(vec, p1));
+    assert(STPOINT_containsPoint(vec, p3));
+
+    // Remove non-existent
+    STPOINT_removePoint(vec, p4_non_existent);
+    assert(STPOINT_getSize(vec) == 2);
+
+    // Remove first
+    STPOINT_removePoint(vec, p1);
+    assert(STPOINT_getSize(vec) == 1);
+    assert(!STPOINT_containsPoint(vec, p1));
+    assert(STPOINT_containsPoint(vec, p3));
+
+    // Remove last
+    STPOINT_removePoint(vec, p3);
+    assert(STPOINT_getSize(vec) == 0);
+    assert(!STPOINT_containsPoint(vec, p3));
+
+    STPOINT_destroyVector(&vec);
+    MATRIXWORLD_matrixFree(&matrix);
+    printf("Passed: Remove Point\n");
+}
+
+void test_clear_vector() {
+    printf("Testing: Clear Vector\n");
+    WorldMatrix* matrix = MATRIXWORLD_matrixInitialization(10, 10);
+    StartingPointVector* vec = STPOINT_createVector(matrix);
+
+    STPOINT_addPoint(vec, (Cords){1, 1});
+    STPOINT_addPoint(vec, (Cords){2, 2});
+    assert(STPOINT_getSize(vec) == 2);
+
+    STPOINT_cleanVector(vec);
+    assert(STPOINT_getSize(vec) == 0);
+    assert(!STPOINT_containsPoint(vec, (Cords){1, 1}));
+
+    // Test clearing an already empty vector
+    STPOINT_cleanVector(vec);
+    assert(STPOINT_getSize(vec) == 0);
+
+    STPOINT_destroyVector(&vec);
+    MATRIXWORLD_matrixFree(&matrix);
+    printf("Passed: Clear Vector\n");
+}
+
 int main(void) {
     printf("--- Running StartingPointVector Tests ---\n");
     test_create_and_destroy();
     test_add_and_contains();
     test_add_duplicates();
     test_add_sorted();
+    test_remove_point();
+    test_clear_vector();
     printf("--- All StartingPointVector Tests Passed ---\n");
     return 0;
 }

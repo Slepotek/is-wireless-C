@@ -55,9 +55,8 @@ Path *PATH_initializePath(const size_t pathSize,
     fprintf(stderr, "FATAL ERROR: Path size can not be 0!\n");
     exit(EXIT_FAILURE);
   } else if (pathSize > (matrixSize * SEVENTY_FIVE_PERCENT)) {
-    fprintf(stderr, "FATAL ERROR: Path size must be within 75%% size "
+    fprintf(stderr, "ERROR: Path size must be within 75%% size "
                     "constraint of the matrix!\n");
-    exit(EXIT_FAILURE);
   }
   size_t sizeOfThePathStruct = sizeof(Path) + (sizeof(Cords) * pathSize);
   Path *newPath = (Path*)malloc(sizeOfThePathStruct);
@@ -70,9 +69,9 @@ Path *PATH_initializePath(const size_t pathSize,
   return newPath;
 }
 
-void PATH_freePath(Path **path_pp) { free(*path_pp); }
+void PATH_freePath(Path** const path_pp) { free(*path_pp); }
 
-void PATH_addCoordinates(Path *path_p, uint16_t row, uint16_t col) {
+void PATH_addCoordinates(Path* const path_p, uint16_t row, uint16_t col) {
   PATH_internal_nullCheck(
       path_p, "FATAL ERROR: Trying to add coordinates to Path structure, but "
               "the path structure is not initialized!\n");
@@ -87,7 +86,7 @@ void PATH_addCoordinates(Path *path_p, uint16_t row, uint16_t col) {
   }
 }
 
-Cords PATH_getLastCoordinates(Path *path_p) {
+Cords PATH_getLastCoordinates(const Path* const path_p) {
   PATH_internal_nullCheck(
       path_p,
       "FATAL ERROR: Trying to get last coordinates of Path structure, but "
@@ -102,7 +101,34 @@ Cords PATH_getLastCoordinates(Path *path_p) {
   return lastCoordinates;
 }
 
-Cords PATH_popCoordinates(Path *path_p) {
+bool PATH_containsCoordinates(const Path* const path_p, const Cords* const coordinates) {
+  PATH_internal_nullCheck(
+      path_p,
+      "FATAL ERROR: Trying to get last coordinates of Path structure, but "
+      "the path structure is not initialized!\n");
+  if (PATH_isEmpty(path_p)) {
+    fprintf(stderr,
+            "ERROR: The Path structure is initialized, but there are no "
+            "coordinates in the Path structure. The Path is EMPTY!\n");
+    return false;
+  }
+  if (coordinates->row == UINT16_MAX || coordinates->col == UINT16_MAX)
+  {
+    fprintf(stderr, "FATAL ERROR: coordinates that are being checked in the Path struct are invalid!");
+    exit(EXIT_FAILURE);
+  }
+  for (uint32_t index = 0; index < path_p->currentNoOfCordsInPath; index++)
+  {
+    Cords tempCheck = path_p->pathArray[index];
+    if (tempCheck.row == coordinates->row && tempCheck.col == coordinates->col)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+Cords PATH_popCoordinates(Path* const path_p) {
   PATH_internal_nullCheck(
       path_p,
       "FATAL ERROR: Trying to get last coordinates of Path structure, but "
@@ -120,7 +146,7 @@ Cords PATH_popCoordinates(Path *path_p) {
   return lastCoordinates;
 }
 
-bool PATH_isContiguous(Path *path_p) {
+bool PATH_isContiguous(const Path * const path_p) {
   PATH_internal_nullCheck(
       path_p, "FATAL ERROR: Trying to check if the Path is contiguous but the "
               "path structure is not initialized!\n");
@@ -146,23 +172,23 @@ bool PATH_isContiguous(Path *path_p) {
   return true;
 }
 
-bool PATH_isEmpty(Path *path_p) {
+bool PATH_isEmpty(const Path * const path_p) {
   PATH_internal_nullCheck(path_p, "FATAL ERROR: Path is not initialized!\n");
   return path_p->currentNoOfCordsInPath == 0;
 }
 
-size_t PATH_getLength(Path *path_p) {
+size_t PATH_getLength(const Path* const path_p) {
   PATH_internal_nullCheck(path_p, "FATAL ERROR: Path is not initialized!\n");
   return path_p->currentNoOfCordsInPath;
 }
 
-void PATH_clearPath(Path *path_p) {
+void PATH_clearPath(Path* const path_p) {
   PATH_internal_nullCheck(path_p, "FATAL ERROR: Path is not initialized!\n");
   memset(path_p->pathArray, 0, sizeof(Cords) * path_p->currentNoOfCordsInPath);
   path_p->currentNoOfCordsInPath = 0;
 }
 
-void PATH_printPath(Path *path_p) {
+void PATH_printPath(const Path* const path_p) {
   PATH_internal_nullCheck(path_p, "FATAL ERROR: Path is not initialized!\n");
   if (PATH_isEmpty(path_p)) {
     printf("Path is empty.\n");
