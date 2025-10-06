@@ -22,6 +22,7 @@ typedef struct {
   uint16_t rows;              /**< Number of rows in the matrix. */
   uint16_t cols;              /**< Number of columns in the matrix. */
   uint32_t pathLength;        /**< The target length of the path to find. */
+  bool isMultithreading;      /**< Flag to enable the multithreaded algorithm. */
   Cords *blockedCells;        /**< Dynamic array of coordinates for blocked cells. */
   uint32_t blockedCellsCount; /**< Number of elements in the blockedCells array. */
   const char *blockedCellsFile; /**< Path to a file containing blocked cell coordinates. */

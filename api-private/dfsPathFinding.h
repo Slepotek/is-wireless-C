@@ -29,15 +29,16 @@
  * @brief Attempts to find a contiguous path of a specified length in a matrix.
  *
  * This function uses a randomized DFS with backtracking to find a path of
- * `pathLength` cells. It iterates by picking random, unblocked starting points
- * until a valid path is found or the search space is exhausted.
+ * `pathLength` cells. It can run in either a single-threaded or a
+ * multithreaded mode.
  *
- * @param[in] matrix_p   A pointer to the WorldMatrix to search within.
- * @param[in] pathLength The desired length of the path.
+ * @param[in] matrix_p         A pointer to the WorldMatrix to search within.
+ * @param[in] pathLength       The desired length of the path.
+ * @param[in] isMultithreading A flag to enable the multithreaded algorithm.
  * @return A pointer to a Path object if a path is found.
  *         Returns NULL if no path can be found. The caller is responsible
  *         for freeing the returned Path object using PATH_freePath().
  */
-[[nodiscard]] Path* DFS_findPath(WorldMatrix* matrix_p, uint32_t pathLength);
+[[nodiscard]] Path* DFS_findPath(WorldMatrix* matrix_p, uint32_t pathLength, bool isMultithreading);
 
 #endif // DFS_PATH_FINDING_H

@@ -63,6 +63,12 @@ void PATH_addCoordinates(Path* const path_p, uint16_t row, uint16_t col);
  */
 [[nodiscard]] Cords PATH_getLastCoordinates(const Path* const path_p);
 
+/**
+ * @brief Checks if the path contains a specific coordinate.
+ * @param path_p[in] A pointer to the Path instance.
+ * @param coordinates[in] A pointer to the Cords to search for.
+ * @return true if the coordinate is found in the path, false otherwise.
+ */
 [[nodiscard]] bool PATH_containsCoordinates(const Path* const path_p, const Cords* const coordinates);
 
 /**
@@ -104,6 +110,16 @@ void PATH_clearPath(Path* const path_p);
  * @param path_p[in] A pointer to the Path instance.
  */
 void PATH_printPath(const Path* const path_p);
+
+/**
+ * @brief Gets the total byte size of the path structure, including its flexible array member.
+ *
+ * This is useful for operations like memcpy where the complete size of the allocated
+ * object is needed.
+ * @param path_p[in] A pointer to the Path instance.
+ * @return The total size of the Path structure in bytes.
+ */
+[[nodiscard]] size_t PATH_getByteSize(const Path* const path_p);
 
 /* > End of Multiple Inclusion Protection *********************************/
 #endif /* PATH_H */

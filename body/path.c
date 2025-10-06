@@ -201,6 +201,11 @@ void PATH_printPath(const Path* const path_p) {
   }
 }
 
+size_t PATH_getByteSize(const Path* const path_p)
+{
+  return (sizeof(Path) + (sizeof(Cords) * path_p->currentNoOfCordsInPath));
+}
+
 /* > Local Function Definitions **********************************************/
 
 static void PATH_internal_nullCheck(const Path *const path_p,

@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 
   // 4. Run Pathfinding Algorithm
   printf("Searching for a path...\n");
-  Path *foundPath = DFS_findPath(world, params->pathLength);
+  Path *foundPath = DFS_findPath(world, params->pathLength, params->isMultithreading);
 
   // 5. Report Results
   if (foundPath != NULL) {

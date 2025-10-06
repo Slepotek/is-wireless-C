@@ -168,13 +168,13 @@ void MATRIXWORLD_clearMatrix(WorldMatrix *const matrix_p) {
   }
 }
 
-uint16_t MATRIXWORLD_getRowSize(WorldMatrix *const matrix_p) {
+uint16_t MATRIXWORLD_getRowSize(const WorldMatrix *const matrix_p) {
   MATRIXWORLD_internal_nullCheck(matrix_p,
                                  "FATAL ERROR: WorldMatrix is uninitialized\n");
   return matrix_p->rows;
 }
 
-uint16_t MATRIXWORLD_getColSize(WorldMatrix *const matrix_p) {
+uint16_t MATRIXWORLD_getColSize(const WorldMatrix *const matrix_p) {
   MATRIXWORLD_internal_nullCheck(matrix_p,
                                  "FATAL ERROR: WorldMatrix is uninitialized\n");
   return matrix_p->cols;
@@ -205,7 +205,7 @@ uint16_t MATRIXWORLD_countUnblockedNeighbors(WorldMatrix *const matrix_p,
   return unblockedNeighbours;
 }
 
-bool MATRIXWORLD_isBlocked(WorldMatrix *const matrix_p, uint16_t row,
+bool MATRIXWORLD_isBlocked(const WorldMatrix *const matrix_p, uint16_t row,
                            uint16_t col) {
   MATRIXWORLD_internal_nullCheck(
       matrix_p, "FATAL ERROR: Trying to check if the cell isBlocked but the "
@@ -221,7 +221,7 @@ bool MATRIXWORLD_isBlocked(WorldMatrix *const matrix_p, uint16_t row,
   return matrix_p->worldMatrix[oneDimMappedIndex];
 }
 
-uint16_t MATRIXWORLD_getNoOfUnblockedCells(WorldMatrix *const matrix_p) {
+uint16_t MATRIXWORLD_getNoOfUnblockedCells(const WorldMatrix *const matrix_p) {
   MATRIXWORLD_internal_nullCheck(
       matrix_p, "FATAL ERROR: trying to get noOfUnblockedCells, but "
                 "WorldMatrix is uninitialized\n");

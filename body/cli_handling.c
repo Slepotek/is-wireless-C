@@ -66,6 +66,7 @@ void CLI_printHelp(void) {
          "OPTIONAL:\n"
          "    --blockedCells COORDS   Blocked cell coordinates (e.g., --blockedCells {1,0} {2,1})\n"
          "    --blockedCellsFile FILE Path to file containing blocked cell coordinates\n"
+         "    --multithreading        Flag enabling the execution of the program on parallel threads\n"
          "    --help, -h              Show this help message\n\n"
          "EXAMPLES:\n"
          "    pathFinder --rows 5 --cols 5 --pathLength 6\n"
@@ -100,7 +101,8 @@ Parameters *CLI_parseCliCommands(int argc, char *argv[]) {
                            .pathLength = 0,
                            .blockedCells = NULL,
                            .blockedCellsCount = 0,
-                           .blockedCellsFile = NULL
+                           .blockedCellsFile = NULL,
+                           .isMultithreading = false
                           };
 
     for (int i = 1; i < argc; ++i) {
@@ -126,26 +128,30 @@ Parameters *CLI_parseCliCommands(int argc, char *argv[]) {
                 goto error_exit;
             }
         } else if (strcmp(arg, "--blockedCellsFile") == 0) {
-            if (++i >= argc) {
-                fprintf(stderr, "Error: Missing file path for --blockedCellsFile\n");
-                goto error_exit;
-            }
-            params->blockedCellsFile = argv[i];
-        } else if (strcmp(arg, "--blockedCells") == 0) {
-            while (i + 1 < argc && argv[i + 1][0] == '{') {
-                i++;
-                uint16_t row, col;
-                if (sscanf(argv[i], "{%hu,%hu}", &row, &col) != 2) {
-                    fprintf(stderr, "Error: Invalid format for --blockedCells. Expected {row,col}.\n");
-                    goto error_exit;
-                }
-                if (!CLI_HANDLING_internal_addBlockedCell(params, row, col)) {
-                    goto error_exit;
-                }
-            }
-        } else {
-            fprintf(stderr, "Error: Unknown option '%s'\n", arg);
+          if (++i >= argc) {
+            fprintf(stderr,
+                    "Error: Missing file path for --blockedCellsFile\n");
             goto error_exit;
+          }
+          params->blockedCellsFile = argv[i];
+        } else if (strcmp(arg, "--multithreading") == 0) {
+          params->isMultithreading = true;
+        } else if (strcmp(arg, "--blockedCells") == 0) {
+          while (i + 1 < argc && argv[i + 1][0] == '{') {
+            i++;
+            uint16_t row, col;
+            if (sscanf(argv[i], "{%hu,%hu}", &row, &col) != 2) {
+              fprintf(stderr, "Error: Invalid format for --blockedCells. "
+                              "Expected {row,col}.\n");
+              goto error_exit;
+            }
+            if (!CLI_HANDLING_internal_addBlockedCell(params, row, col)) {
+              goto error_exit;
+            }
+          }
+        } else {
+          fprintf(stderr, "Error: Unknown option '%s'\n", arg);
+          goto error_exit;
         }
     }
 

@@ -179,17 +179,21 @@ def run_cli_with_blocked_cells(file_paths_dict, spinner):
         print(f"Found pathFinder executable: {path_finder_path}\n")
 
         # Run tests for given matrix size
-        size = input("Enter matrix size to test (small, medium(might take long),"
+        size = input("Enter matrix size to test (small, medium(might take long)," \
                      " large(will take very long)): ").strip().lower()
 
         if size not in matrix_sizes:
             print(f"Invalid size '{size}'. Valid options are: {', '.join(matrix_sizes.keys())}")
             return
+
+        # Ask for multithreading option
+        multithreading_choice = input("Run with multithreading? (y/n): ").strip().lower()
+
         rows, cols = matrix_sizes[size]
         print(f"Running pathfinding test for {size} matrix ({rows}x{cols})...")
         
         # Set path length to 10% of total cells (reasonable for testing)
-        path_length = int((rows * cols) * 0.01)
+        path_length = int((rows * cols) * 0.008)
         blocked_cells_file = file_paths_dict[size]
         
         # Execute pathfinding with blocked cells file
@@ -200,6 +204,10 @@ def run_cli_with_blocked_cells(file_paths_dict, spinner):
             "--pathLength", str(path_length),
             "--blockedCellsFile", blocked_cells_file,
         ]
+
+        if multithreading_choice in ['y', 'yes']:
+            cmd.append("--multithreading")
+
         spinner.start()
         result = subprocess.run(cmd, capture_output=True, text=True)
         spinner.stop()

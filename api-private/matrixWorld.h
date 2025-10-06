@@ -92,14 +92,14 @@ void MATRIXWORLD_clearMatrix(WorldMatrix *const matrix_p);
  * @param matrix_p[in] Pointer to the WorldMatrix.
  * @return The number of rows.
  */
-[[nodiscard]] uint16_t MATRIXWORLD_getRowSize(WorldMatrix *const matrix_p);
+[[nodiscard]] uint16_t MATRIXWORLD_getRowSize(const WorldMatrix *const matrix_p);
 
 /**
  * @brief Gets the number of columns in the matrix.
  * @param matrix_p[in] Pointer to the WorldMatrix.
  * @return The number of columns.
  */
-[[nodiscard]] uint16_t MATRIXWORLD_getColSize(WorldMatrix *const matrix_p);
+[[nodiscard]] uint16_t MATRIXWORLD_getColSize(const WorldMatrix *const matrix_p);
 
 /**
  * @brief Counts unblocked neighbors in 4 cardinal directions.
@@ -117,14 +117,14 @@ void MATRIXWORLD_clearMatrix(WorldMatrix *const matrix_p);
  * @param col[in] The column of the cell to check.
  * @return true if the cell is blocked, false otherwise.
  */
-[[nodiscard]] bool MATRIXWORLD_isBlocked(WorldMatrix *const matrix_p, uint16_t row, uint16_t col);
+[[nodiscard]] bool MATRIXWORLD_isBlocked(const WorldMatrix *const matrix_p, uint16_t row, uint16_t col);
 
 /**
  * @brief Gets the number of unblocked cells in the matrix.
  * @param matrix_p[in] Pointer to the WorldMatrix.
  * @return The total number of unblocked cells.
  */
-[[nodiscard]] uint16_t MATRIXWORLD_getNoOfUnblockedCells(WorldMatrix *const matrix_p);
+[[nodiscard]] uint16_t MATRIXWORLD_getNoOfUnblockedCells(const WorldMatrix *const matrix_p);
 
 /**
  * @brief Gets the number of blocked cells in the matrix.

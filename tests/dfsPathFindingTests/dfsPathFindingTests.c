@@ -10,7 +10,7 @@ void test_finds_valid_path_in_open_matrix() {
     WorldMatrix* matrix = MATRIXWORLD_matrixInitialization(10, 10);
     const uint32_t path_length = 12;
 
-    Path* path = DFS_findPath(matrix, path_length);
+    Path* path = DFS_findPath(matrix, path_length, false);
     assert(path != NULL);
     assert(PATH_getLength(path) == path_length);
     assert(PATH_isContiguous(path));
@@ -25,7 +25,7 @@ void test_returns_null_for_impossible_length() {
     WorldMatrix* matrix = MATRIXWORLD_matrixInitialization(5, 5);
     const uint32_t impossible_length = 30; // More than 25 cells
 
-    Path* path = DFS_findPath(matrix, impossible_length);
+    Path* path = DFS_findPath(matrix, impossible_length, false);
     assert(path == NULL);
 
     MATRIXWORLD_matrixFree(&matrix);
@@ -41,11 +41,28 @@ void test_returns_null_for_fully_blocked_matrix() {
         }
     }
 
-    Path* path = DFS_findPath(matrix, 5);
+    Path* path = DFS_findPath(matrix, 5, false);
     assert(path == NULL);
 
     MATRIXWORLD_matrixFree(&matrix);
     printf("Passed: Return NULL for Fully Blocked Matrix\n");
+}
+
+void test_finds_valid_path_in_open_matrix_multithreaded() {
+    printf("Testing: Find Valid Path in Open Matrix (Multithreaded)\n");
+    WorldMatrix* matrix = MATRIXWORLD_matrixInitialization(10, 10);
+    const uint32_t path_length = 12;
+
+    // The only change is this 'true' parameter
+    Path* path = DFS_findPath(matrix, path_length, true);
+
+    assert(path != NULL);
+    assert(PATH_getLength(path) == path_length);
+    assert(PATH_isContiguous(path));
+
+    PATH_freePath(&path);
+    MATRIXWORLD_matrixFree(&matrix);
+    printf("Passed: Find Valid Path in Open Matrix (Multithreaded)\n");
 }
 
 int main(void) {
@@ -53,6 +70,7 @@ int main(void) {
     test_finds_valid_path_in_open_matrix();
     test_returns_null_for_impossible_length();
     test_returns_null_for_fully_blocked_matrix();
+    test_finds_valid_path_in_open_matrix_multithreaded();
     printf("--- All DfsPathFinding Tests Passed ---\n");
     return 0;
 }
